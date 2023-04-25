@@ -25,38 +25,37 @@ app.post('/order', (req, res) => {
   
     const totalPrice = req.body.quantity * stock.price;
   
-    const responseString = `You placed an order to buy ${req.body.quantity} stocks of ${stock.name}. 
+    const responseString = `You placed an order to buy ${req.body.quantity} stocks of ${stock.company}. 
     The price of one stock is $${stock.price.toLocaleString('en-US', { style: 'currency', currency: 'USD' })} 
     and the total price for this order is $${totalPrice.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}`;
   
     res.send(responseString);
-  });
+});
 
 function findStockBySymbol(symbol) {
     return stocks.find(stock => stock.symbol === symbol);
-  }
+}
 
-  function findStockByPrice(criterion) {
+function findStockByPrice(criterion) {
     let resultStock;
     let resultPrice;
-  
+
     for (const stock of stocks) {
-      const price = parseFloat(stock.price);
-  
-      if (!resultStock) {
-        resultStock = stock;
-        resultPrice = price;
-      } else if (criterion === 'highest' && price > resultPrice) {
-        resultStock = stock;
-        resultPrice = price;
-      } else if (criterion === 'lowest' && price < resultPrice) {
-        resultStock = stock;
-        resultPrice = price;
-      }
+        const price = parseFloat(stock.price);
+
+        if (!resultStock) {
+          resultStock = stock;
+          resultPrice = price;
+        } else if (criterion === 'highest' && price > resultPrice) {
+          resultStock = stock;
+          resultPrice = price;
+        } else if (criterion === 'lowest' && price < resultPrice) {
+          resultStock = stock;
+          resultPrice = price;
+        }
     }
-  
     return resultStock;
-  }
+}
 
 app.get('/search', (req, res) => {
   const criterion = req.query.criterion;
